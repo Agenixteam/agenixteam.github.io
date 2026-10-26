@@ -25,7 +25,8 @@ a{color:inherit;text-decoration:none}
 .bar{display:flex;align-items:center;justify-content:space-between;height:52px}
 .back{display:flex;align-items:center;gap:6px;font:600 14px Rubik;min-height:44px}
 .back svg{width:18px;height:18px}
-.bar img{height:20px;filter:brightness(0) invert(1);opacity:.9}
+/* keep the AGENIX CI colours as-is: sit the logo on a light chip so it reads on every company theme */
+.bar img{height:30px;padding:6px 12px;background:#fff;border-radius:9px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:10px 0 14px;max-width:520px;margin:0 auto}
 .tab{display:flex;flex-direction:column;align-items:center;gap:6px;font:600 12px/1.2 Rubik;color:var(--muted);text-align:center}
 .tab img{width:100%;max-width:80px;aspect-ratio:1;border-radius:18px;opacity:.6;transition:opacity .2s,box-shadow .2s,transform .2s}
