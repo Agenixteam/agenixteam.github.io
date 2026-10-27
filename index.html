@@ -458,5 +458,8 @@ setTimeout(()=>document.getElementById('socialHint').style.opacity=0,4000);   //
 const dock=document.getElementById('dock');
 new IntersectionObserver(([e])=>dock.classList.toggle('show',!e.isIntersecting)).observe(document.getElementById('heroCta'));
 </script>
+<!-- visitor counter: the link is only shared by QR, so every visit here is a QR scan.
+     Stats are private to the account owner at agenixteam.goatcounter.com; localhost visits are ignored. -->
+<script data-goatcounter="https://agenixteam.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

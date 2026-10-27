@@ -107,9 +107,14 @@ function show(id, push) {
   pages.innerHTML = c.pages.map((p, i) =>
     `<a href="${p}" target="_blank" rel="noopener"><img src="${p}" alt="${c.name} brochure page ${i + 1}"></a>`).join('');
   pages.classList.remove('swap'); void pages.offsetWidth; pages.classList.add('swap');
-  if (push) { history.replaceState(null, '', '?c=' + c.id); scrollTo({top: 0, behavior: 'smooth'}); }
+  if (push) {
+    history.replaceState(null, '', '?c=' + c.id); scrollTo({top: 0, behavior: 'smooth'});
+    window.goatcounter && goatcounter.count && goatcounter.count({path: location.pathname + '?c=' + c.id});   // count each company switch as a view
+  }
 }
 show(new URLSearchParams(location.search).get('c'));
 </script>
+<!-- visitor counter (only the account owner sees the stats at agenixteam.goatcounter.com; ignores localhost) -->
+<script data-goatcounter="https://agenixteam.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
