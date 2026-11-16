@@ -55,12 +55,16 @@ a{color:inherit;text-decoration:none}
 .eyebrow::before{content:"";width:34px;height:3px;border-radius:3px;background:var(--accent)}
 .works h2{font:700 clamp(22px,4.6vw,28px)/1.2 Rubik;margin:8px 0 4px}
 .works .sub{color:var(--muted);font-size:14px;margin-bottom:14px}
-.wtabs{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 14px;scrollbar-width:none}
-.wtab{display:inline-flex;align-items:center;gap:9px;min-height:46px;padding:5px 14px 5px 5px;border-radius:12px;font:600 14px Rubik;color:var(--text);
-  border:1.5px solid var(--line);background:rgba(255,255,255,.08);cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+/* game filter: wrapping grid (no sideways scroll) so every game is visible on a phone; name above, count below */
+.wtabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;padding:2px 0 14px}
+.wtab{display:flex;align-items:center;gap:9px;min-height:50px;padding:6px 12px 6px 6px;border-radius:12px;font:600 15px/1.2 Rubik;color:var(--text);text-align:left;
+  border:1.5px solid var(--line);background:rgba(255,255,255,.08);cursor:pointer;min-width:0;transition:background .15s,border-color .15s}
+.wtab:not(:has(img)){padding-left:14px}
 .wtab:hover{background:rgba(255,255,255,.16)}
-.wtab img{width:34px;height:34px;border-radius:9px;object-fit:cover}
-.wtab small{font:500 12px Inter;color:var(--muted)}
+.wtab img{flex:none;width:36px;height:36px;border-radius:9px;object-fit:cover}
+.wtab span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.wtab small{font:500 12px/1.25 Inter;color:var(--muted)}
+.wtab small i{font-style:normal;white-space:nowrap}
 .wtab[aria-pressed=true]{background:var(--accent);border-color:transparent;color:#111}
 .wtab[aria-pressed=true] small{color:rgba(0,0,0,.65)}
 .wgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));grid-auto-flow:dense;gap:12px}
@@ -135,14 +139,14 @@ const works = document.getElementById('works'), wtabs = document.getElementById(
 const io = new IntersectionObserver(es => es.forEach(e => {   // videos only play while on screen
   const v = e.target; if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); } else v.pause();
 }), {rootMargin: '200px'});
-function count(fs) { const v = fs.filter(f => f.video).length, p = fs.length - v; return [v && v + (v > 1 ? ' videos' : ' video'), p && p + (p > 1 ? ' images' : ' image')].filter(Boolean).join(' · '); }
+function count(fs) { const v = fs.filter(f => f.video).length, p = fs.length - v; return [v && v + (v > 1 ? ' videos' : ' video'), p && p + (p > 1 ? ' images' : ' image')].filter(Boolean).map(s => `<i>${s}</i>`).join(' · '); }
 function showWorks(c) {
   works.hidden = !c.works.length;
   document.getElementById('hint').textContent = c.works.length ? 'Scroll down for the brochure and our works · tap to open full size' : 'Scroll down for all pages · tap a page to open it full size';
   if (!c.works.length) return;
   const all = c.works.flatMap(w => w.files.map(f => ({...f, game: w.game})));
   const opts = [{game: 'All', files: all}, ...c.works];
-  wtabs.innerHTML = opts.map((w, i) => `<button class="wtab" data-i="${i}">${w.icon ? `<img src="${w.icon}" alt="">` : ''}<span>${w.game} <small>${count(w.files)}</small></span></button>`).join('');
+  wtabs.innerHTML = opts.map((w, i) => `<button class="wtab" data-i="${i}">${w.icon ? `<img src="${w.icon}" alt="">` : ''}<span>${w.game}<small>${count(w.files)}</small></span></button>`).join('');
   wtabs.querySelectorAll('.wtab').forEach(b => b.onclick = () => pick(+b.dataset.i));
   function pick(i) {
     wtabs.querySelectorAll('.wtab').forEach(b => b.setAttribute('aria-pressed', +b.dataset.i === i));
